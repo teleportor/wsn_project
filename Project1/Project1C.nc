@@ -75,7 +75,6 @@ implementation {
     }
     payload_get = (Sensor_Data_Msg*)(call Packet.getPayload(&pkt, sizeof(Sensor_Data_Msg)));
     if (payload_get == NULL) {
-      call Leds.led0Off();
       call Leds.led2Toggle();
       return;
     }
@@ -84,6 +83,7 @@ implementation {
     reading = TRUE;
     readFlag = 0;
     call Leds.led0On();
+call Leds.led1On();
     call TempReader.read();
     call HumiReader.read();
     call PhotoReader.read();
@@ -91,6 +91,7 @@ implementation {
 
   event void TempReader.readDone(error_t result, uint16_t val) {
     if (result == SUCCESS && busy == FALSE) {
+call Leds.led1Off();
       payload_get->temperature = val;
       readFlag++;
       if (readFlag == 3) {
@@ -102,6 +103,7 @@ implementation {
         }
         else {
           if (call RadioSend.send(next_node_id, &pkt, sizeof(Sensor_Data_Msg)) == SUCCESS) {
+call Leds.led2On();
             busy = TRUE;
             isForward = FALSE;
           }
@@ -126,6 +128,7 @@ implementation {
         }
         else {
           if (call RadioSend.send(next_node_id, &pkt, sizeof(Sensor_Data_Msg)) == SUCCESS) {
+call Leds.led2On();
             busy = TRUE;
             isForward = FALSE;
           }
@@ -150,6 +153,7 @@ implementation {
         }
         else {
           if (call RadioSend.send(next_node_id, &pkt, sizeof(Sensor_Data_Msg)) == SUCCESS) {
+call Leds.led2On();
             busy = TRUE;
             isForward = FALSE;
           }
@@ -169,6 +173,7 @@ implementation {
         call Leds.led1Off();
       }
       else {
+call Leds.led2Off();
         reading = FALSE;
         call Leds.led0Off();
       }

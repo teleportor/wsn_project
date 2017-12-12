@@ -7,7 +7,7 @@
 #define TOS_NODE_ID_2      21
 #define TOS_NODE_ID_NVALID 10031
 
-#define TIMER_PERIOD 100
+#define TIMER_PERIOD 500
 
 typedef nx_struct Sensor_Data_Msg {
   nx_uint16_t node_id;
